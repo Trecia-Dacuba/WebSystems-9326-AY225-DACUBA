@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Philippine Red Cross</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                        <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Philippine Red Cross</span>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Programs & Services</a></li>
+                <li><a href="events.html">Events & Campaigns</a></li>
+                <li><a href="volunteer.html">Get Involved</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div class="section-tag">Who We Are</div>
+                <h1 class="page-title">About Philippine Red Cross</h1>
+                <p class="page-subtitle">A legacy of compassion and service spanning over seven decades</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section">
+        <div class="container">
+            <div class="history-grid">
+                <div class="history-content">
+                    <h2>Our History</h2>
+                    <p>The Philippine Red Cross was established on March 22, 1947, by virtue of Republic Act No. 95. As an independent, non-profit organization, we serve as an auxiliary to the government in humanitarian services and civil defense preparedness.</p>
+                    <p>For over 75 years, we have been at the forefront of disaster response, health services, and community development, touching millions of lives across the archipelago.</p>
+                    <div class="timeline-toggle">
+                        <button class="btn btn-outline" id="timelineToggle">View Our Timeline</button>
+                    </div>
+                </div>
+                <div class="history-stats">
+                    <div class="stat-card">
+                        <h3>1947</h3>
+                        <p>Year Established</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>82</h3>
+                        <p>Chapters Nationwide</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>15,000+</h3>
+                        <p>Active Volunteers</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>24/7</h3>
+                        <p>Emergency Response</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section (Hidden by default) -->
+    <section class="timeline-section" id="timelineSection" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">Our Journey</h2>
+            <div class="timeline" id="timeline">
+                <!-- Timeline items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Principles Section -->
+    <section class="principles-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Our Foundation</div>
+                <h2 class="section-title">Seven Fundamental Principles</h2>
+                <p class="section-description">These principles guide all our actions and bind together the Red Cross and Red Crescent Movement worldwide.</p>
+            </div>
+            <div class="principles-accordion" id="principlesAccordion">
+                <!-- Accordion items will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Section -->
+    <section class="leadership-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Our Team</div>
+                <h2 class="section-title">Leadership</h2>
+            </div>
+            <div class="leadership-grid" id="leadershipGrid">
+                <!-- Leadership cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="impact-section">
+        <div class="container">
+            <div class="impact-content">
+                <div class="section-tag">Making a Difference</div>
+                <h2 class="section-title">Our Impact</h2>
+                <div class="impact-grid">
+                    <div class="impact-card">
+                        <div class="impact-number" data-target="1200000">0</div>
+                        <p>People Assisted Annually</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number" data-target="350000">0</div>
+                        <p>Blood Units Collected</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number" data-target="500">0</div>
+                        <p>Disaster Responses</p>
+                    </div>
+                    <div class="impact-card">
+                        <div class="impact-number" data-target="75000">0</div>
+                        <p>First Aid Trainees</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                            <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <span>Philippine Red Cross</span>
+                    </div>
+                    <p class="footer-description">A premier humanitarian organization dedicated to protecting life and dignity through responsive service delivery.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Programs & Services</a></li>
+                        <li><a href="events.html">Events & Campaigns</a></li>
+                        <li><a href="volunteer.html">Volunteer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>37 EDSA, Mandaluyong City</li>
+                        <li>Manila, Philippines 1550</li>
+                        <li>hotline@redcross.org.ph</li>
+                        <li>(02) 8790-2300</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/phredcross" aria-label="Facebook">FB</a>
+                        <a href="https://twitter.com/philredcross" aria-label="Twitter">TW</a>
+                        <a href="https://www.instagram.com/philredcross/" aria-label="Instagram">IG</a>
+                        <a href="http://www.linkedin.com/company/1089054" aria-label="LinkedIn">IN</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Philippine Red Cross. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/about.js"></script>
+</body>
+</html>

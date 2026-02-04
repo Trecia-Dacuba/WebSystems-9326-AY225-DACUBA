@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Campaigns - Philippine Red Cross</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                        <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Philippine Red Cross</span>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Programs & Services</a></li>
+                <li><a href="events.html" class="active">Events & Campaigns</a></li>
+                <li><a href="volunteer.html">Get Involved</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div class="section-tag">Get Involved</div>
+                <h1 class="page-title">Events & Campaigns</h1>
+                <p class="page-subtitle">Join our ongoing initiatives and upcoming events</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Navigation Tabs -->
+    <section class="events-tabs-section">
+        <div class="container">
+            <div class="tabs-nav" id="tabsNav">
+                <button class="tab-btn active" data-tab="upcoming">Upcoming Events</button>
+                <button class="tab-btn" data-tab="campaigns">Active Campaigns</button>
+                <button class="tab-btn" data-tab="past">Past Events</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Tab -->
+    <section class="tab-content active" id="upcoming-tab">
+        <div class="container">
+            <div class="events-filter">
+                <select id="monthFilter" class="filter-select">
+                    <option value="all">All Months</option>
+                    <option value="0">January</option>
+                    <option value="1">February</option>
+                    <option value="2">March</option>
+                    <option value="3">April</option>
+                    <option value="4">May</option>
+                    <option value="5">June</option>
+                    <option value="6">July</option>
+                    <option value="7">August</option>
+                    <option value="8">September</option>
+                    <option value="9">October</option>
+                    <option value="10">November</option>
+                    <option value="11">December</option>
+                </select>
+                <select id="locationFilter" class="filter-select">
+                    <option value="all">All Locations</option>
+                    <option value="Metro Manila">Metro Manila</option>
+                    <option value="Luzon">Luzon</option>
+                    <option value="Visayas">Visayas</option>
+                    <option value="Mindanao">Mindanao</option>
+                </select>
+            </div>
+            <div class="events-grid" id="upcomingEventsGrid">
+                <!-- Events will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Campaigns Tab -->
+    <section class="tab-content" id="campaigns-tab">
+        <div class="container">
+            <div class="campaign-categories">
+                <button class="category-btn active" data-category="all">All Campaigns</button>
+                <button class="category-btn" data-category="disaster">Disaster Relief</button>
+                <button class="category-btn" data-category="health">Health</button>
+                <button class="category-btn" data-category="blood">Blood Donation</button>
+                <button class="category-btn" data-category="community">Community</button>
+            </div>
+            <div class="campaigns-grid" id="campaignsGrid">
+                <!-- Campaigns will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Events Tab -->
+    <section class="tab-content" id="past-tab">
+        <div class="container">
+            <div class="year-selector">
+                <button class="year-btn active" data-year="2024">2024</button>
+                <button class="year-btn" data-year="2023">2023</button>
+                <button class="year-btn" data-year="2022">2022</button>
+            </div>
+            <div class="past-events-grid" id="pastEventsGrid">
+                <!-- Past events will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Registration Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content modal-large">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalBody">
+                <!-- Event details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Modal for Campaign Highlights -->
+    <div class="alert-modal" id="alertModal">
+        <div class="alert-content">
+            <div class="alert-icon">🚨</div>
+            <h3 id="alertTitle"></h3>
+            <p id="alertMessage"></p>
+            <button class="btn btn-primary" id="alertClose">Got it</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                            <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <span>Philippine Red Cross</span>
+                    </div>
+                    <p class="footer-description">A premier humanitarian organization dedicated to protecting life and dignity through responsive service delivery.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Programs & Services</a></li>
+                        <li><a href="events.html">Events & Campaigns</a></li>
+                        <li><a href="volunteer.html">Volunteer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>37 EDSA, Mandaluyong City</li>
+                        <li>Manila, Philippines 1550</li>
+                        <li>hotline@redcross.org.ph</li>
+                        <li>(02) 8790-2300</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/phredcross" aria-label="Facebook">FB</a>
+                        <a href="https://twitter.com/philredcross" aria-label="Twitter">TW</a>
+                        <a href="https://www.instagram.com/philredcross/" aria-label="Instagram">IG</a>
+                        <a href="http://www.linkedin.com/company/1089054" aria-label="LinkedIn">IN</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Philippine Red Cross. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/events.js"></script>
+</body>
+</html>

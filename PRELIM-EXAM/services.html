@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programs & Services - Philippine Red Cross</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                        <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Philippine Red Cross</span>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Programs & Services</a></li>
+                <li><a href="events.html">Events & Campaigns</a></li>
+                <li><a href="volunteer.html">Get Involved</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div class="section-tag">What We Do</div>
+                <h1 class="page-title">Programs & Services</h1>
+                <p class="page-subtitle">Comprehensive humanitarian services for communities in need</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Filter -->
+    <section class="services-filter-section">
+        <div class="container">
+            <div class="filter-controls">
+                <div class="search-box">
+                    <input type="text" id="serviceSearch" placeholder="Search services..." />
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">All Services</button>
+                    <button class="filter-btn" data-category="disaster">Disaster Management</button>
+                    <button class="filter-btn" data-category="health">Health Services</button>
+                    <button class="filter-btn" data-category="blood">Blood Services</button>
+                    <button class="filter-btn" data-category="safety">Safety Services</button>
+                    <button class="filter-btn" data-category="welfare">Social Welfare</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-section">
+        <div class="container">
+            <div class="services-results">
+                <p id="resultsCount" class="results-count"></p>
+            </div>
+            <div class="services-detailed-grid" id="servicesGrid">
+                <!-- Services will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Details Modal -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content modal-large">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalBody">
+                <!-- Service details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="services-cta">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Need Our Services?</h2>
+                <p>Contact us for immediate assistance or to learn more about our programs</p>
+                <div class="cta-buttons">
+                    <a href="volunteer.html" class="btn btn-primary">Get in Touch</a>
+                    <a href="tel:0287902300" class="btn btn-outline">Hotline: (02) 8790-2300</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                            <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <span>Philippine Red Cross</span>
+                    </div>
+                    <p class="footer-description">A premier humanitarian organization dedicated to protecting life and dignity through responsive service delivery.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Programs & Services</a></li>
+                        <li><a href="events.html">Events & Campaigns</a></li>
+                        <li><a href="volunteer.html">Volunteer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>37 EDSA, Mandaluyong City</li>
+                        <li>Manila, Philippines 1550</li>
+                        <li>hotline@redcross.org.ph</li>
+                        <li>(02) 8790-2300</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/phredcross" aria-label="Facebook">FB</a>
+                        <a href="https://twitter.com/philredcross" aria-label="Twitter">TW</a>
+                        <a href="https://www.instagram.com/philredcross/" aria-label="Instagram">IG</a>
+                        <a href="http://www.linkedin.com/company/1089054" aria-label="LinkedIn">IN</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Philippine Red Cross. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/services.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippine Red Cross - Humanitarian Services</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                        <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <span class="logo-text">Philippine Red Cross</span>
+            </div>
+            <button class="mobile-toggle" id="mobileToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Programs & Services</a></li>
+                <li><a href="events.html">Events & Campaigns</a></li>
+                <li><a href="volunteer.html">Get Involved</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Serving Humanity Since 1947</div>
+            <h1 class="hero-title">
+                <span class="hero-line">Compassion</span>
+                <span class="hero-line">in Action</span>
+            </h1>
+            <p class="hero-subtitle">Together, we bring hope and healing to communities across the Philippines</p>
+            <div class="hero-buttons">
+                <a href="volunteer.html" class="btn btn-primary">Volunteer Now</a>
+                <a href="#campaigns" class="btn btn-secondary">Active Campaigns</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number" data-target="1200000">0</div>
+                <div class="stat-label">Lives Touched</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="15000">0</div>
+                <div class="stat-label">Volunteers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="82">0</div>
+                <div class="stat-label">Chapters</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Statement -->
+    <section class="mission">
+        <div class="container">
+            <div class="mission-content">
+                <div class="section-tag">Our Mission</div>
+                <h2 class="section-title">Protecting life and dignity</h2>
+                <p class="mission-text">The Philippine Red Cross is a premier humanitarian organization committed to providing quality services to the most vulnerable. Through our seven fundamental principles, we deliver essential aid, promote health and safety, and build resilient communities nationwide.</p>
+                <div class="principles-grid">
+                    <div class="principle-card">
+                        <div class="principle-icon">🤝</div>
+                        <h3>Humanity</h3>
+                    </div>
+                    <div class="principle-card">
+                        <div class="principle-icon">⚖️</div>
+                        <h3>Impartiality</h3>
+                    </div>
+                    <div class="principle-card">
+                        <div class="principle-icon">🌐</div>
+                        <h3>Universality</h3>
+                    </div>
+                    <div class="principle-card">
+                        <div class="principle-icon">🔴</div>
+                        <h3>Unity</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Preview -->
+    <section class="services-preview">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">What We Do</div>
+                <h2 class="section-title">Core Services</h2>
+            </div>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be populated by JavaScript -->
+            </div>
+            <div class="section-footer">
+                <a href="services.html" class="btn btn-outline">View All Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Active Campaigns -->
+    <section class="campaigns" id="campaigns">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Get Involved</div>
+                <h2 class="section-title">Active Campaigns</h2>
+            </div>
+            <div class="campaign-filter">
+                <button class="filter-btn active" data-filter="all">All Campaigns</button>
+                <button class="filter-btn" data-filter="disaster">Disaster Relief</button>
+                <button class="filter-btn" data-filter="health">Health</button>
+                <button class="filter-btn" data-filter="blood">Blood Donation</button>
+            </div>
+            <div class="campaigns-grid" id="campaignsGrid">
+                <!-- Campaigns will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="cta-background"></div>
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Every action counts</h2>
+                <p class="cta-text">Join thousands of volunteers making a difference in communities across the Philippines</p>
+                <div class="cta-buttons">
+                    <a href="volunteer.html" class="btn btn-primary">Become a Volunteer</a>
+                    <a href="volunteer.html#donate" class="btn btn-white">Make a Donation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="20" fill="#E31E24"/>
+                            <path d="M20 8L20 32M8 20L32 20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        </svg>
+                        <span>Philippine Red Cross</span>
+                    </div>
+                    <p class="footer-description">A premier humanitarian organization dedicated to protecting life and dignity through responsive service delivery.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="services.html">Programs & Services</a></li>
+                        <li><a href="events.html">Events & Campaigns</a></li>
+                        <li><a href="volunteer.html">Volunteer</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li>37 EDSA, Mandaluyong City</li>
+                        <li>Manila, Philippines 1550</li>
+                        <li>hotline@redcross.org.ph</li>
+                        <li>(02) 8790-2300</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/phredcross" aria-label="Facebook">FB</a>
+                        <a href="https://twitter.com/philredcross" aria-label="Twitter">TW</a>
+                        <a href="https://www.instagram.com/philredcross/" aria-label="Instagram">IG</a>
+                        <a href="http://www.linkedin.com/company/1089054" aria-label="LinkedIn">IN</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Philippine Red Cross. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Campaign Details -->
+    <div class="modal" id="campaignModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalBody">
+                <!-- Campaign details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/home.js"></script>
+</body>
+</html>
