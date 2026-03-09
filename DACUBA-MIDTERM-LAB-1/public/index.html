@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KOTAKU SCRAPER — Game Database</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ─────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #060a0f;
+      --bg2:        #0d1520;
+      --bg3:        #111d2e;
+      --border:     #1a3050;
+      --neon:       #00ffe7;
+      --neon2:      #ff3c6e;
+      --neon3:      #f9c846;
+      --dim:        #4a6b8a;
+      --text:       #cde0f0;
+      --text-muted: #556d82;
+      --card-bg:    #0c1825;
+      --glow:       0 0 12px rgba(0,255,231,0.35);
+      --glow2:      0 0 12px rgba(255,60,110,0.35);
+      --font-head:  'Orbitron', monospace;
+      --font-mono:  'Share Tech Mono', monospace;
+      --font-body:  'Rajdhani', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── SCANLINE OVERLAY ────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.07) 2px,
+        rgba(0,0,0,0.07) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── SCROLLBAR ───────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
+
+    /* ── HEADER ──────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6,10,15,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--neon), #0089ff);
+      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--glow);
+    }
+
+    .logo-text {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--neon);
+      letter-spacing: 0.2em;
+      text-shadow: var(--glow);
+    }
+
+    .logo-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--dim);
+      letter-spacing: 0.15em;
+      display: block;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-wrapper {
+      flex: 2;
+      min-width: 0;
+      position: relative;
+    }
+
+    .search-wrapper svg {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--dim);
+      width: 16px;
+      height: 16px;
+    }
+
+    input[type="text"], select {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      border-radius: 4px;
+      padding: 0.6rem 0.85rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+
+    .search-wrapper input { padding-left: 2.2rem; }
+
+    input[type="text"]:focus, select:focus {
+      border-color: var(--neon);
+      box-shadow: 0 0 0 2px rgba(0,255,231,0.12);
+    }
+
+    select {
+      cursor: pointer;
+      flex: 1;
+      min-width: 140px;
+      max-width: 200px;
+      width: auto;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234a6b8a'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+
+    /* ── BUTTONS ─────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      font-family: var(--font-head);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--neon);
+      color: var(--bg);
+    }
+    .btn-primary:hover {
+      background: #fff;
+      box-shadow: var(--glow);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--neon);
+      border: 1px solid var(--neon);
+    }
+    .btn-outline:hover {
+      background: rgba(0,255,231,0.08);
+      box-shadow: var(--glow);
+    }
+
+    .btn-danger {
+      background: var(--neon2);
+      color: white;
+    }
+    .btn-danger:hover {
+      background: #ff1744;
+      box-shadow: var(--glow2);
+    }
+
+    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ── HERO ────────────────────────────────── */
+    .hero {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 100% 50%, rgba(0,255,231,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 0% 50%, rgba(255,60,110,0.04) 0%, transparent 70%);
+    }
+
+    .hero-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .hero-left h1 {
+      font-family: var(--font-head);
+      font-size: clamp(1.2rem, 3vw, 1.9rem);
+      font-weight: 900;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+      text-shadow: var(--glow);
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-left p {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+      min-width: 90px;
+    }
+
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--neon3);
+      display: block;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    /* ── SCRAPE PANEL ────────────────────────── */
+    .scrape-panel {
+      max-width: 1400px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .scrape-box {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .scrape-box label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .url-input-group { flex: 1; min-width: 240px; }
+
+    .scrape-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── STATUS BAR ──────────────────────────── */
+    .status-bar {
+      max-width: 1400px;
+      margin: 0 auto 1.5rem;
+      padding: 0 2rem;
+    }
+
+    .status-msg {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--neon);
+      border-radius: 4px;
+      padding: 0.75rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--neon);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .status-msg.visible { opacity: 1; pointer-events: auto; }
+    .status-msg.error { border-left-color: var(--neon2); color: var(--neon2); }
+    .status-msg.warning { border-left-color: var(--neon3); color: var(--neon3); }
+
+    .pulse {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--neon);
+      flex-shrink: 0;
+      animation: pulse 1s infinite;
+    }
+    .status-msg.error .pulse { background: var(--neon2); }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ── TOOLBAR ─────────────────────────────── */
+    .toolbar {
+      max-width: 1400px;
+      margin: 0 auto 1.5rem;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .view-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: none;
+      color: var(--dim);
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .view-btn.active {
+      background: var(--neon);
+      color: var(--bg);
+    }
+
+    .view-btn svg { width: 16px; height: 16px; }
+
+    .sort-group {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .sort-group span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--dim);
+      white-space: nowrap;
+    }
+
+    .results-count {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .results-count strong { color: var(--neon3); }
+
+    /* ── GAME GRID ───────────────────────────── */
+    .games-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem 3rem;
+    }
+
+    #gamesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      transition: all 0.3s;
+    }
+
+    #gamesGrid.list-view {
+      grid-template-columns: 1fr;
+    }
+
+    /* ── GAME CARD ───────────────────────────── */
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      animation: fadeUp 0.4s ease both;
+      position: relative;
+    }
+
+    .game-card:hover {
+      border-color: var(--neon);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,255,231,0.12);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-thumb {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      display: block;
+      background: var(--bg3);
+    }
+
+    .card-thumb-placeholder {
+      width: 100%;
+      height: 170px;
+      background: linear-gradient(135deg, var(--bg3), var(--bg2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .card-body {
+      padding: 1.1rem 1.25rem 1.25rem;
+    }
+
+    .card-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.8rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      font-size: 0.95rem;
+    }
+
+    .field-key {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--neon);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      min-width: 80px;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .field-val {
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .field-val.na { color: var(--text-muted); font-style: italic; font-size: 0.85rem; }
+
+    .card-features {
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-tags {
+      display: flex;
+      gap: 0.3rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      background: rgba(0,255,231,0.08);
+      color: var(--neon);
+      border: 1px solid rgba(0,255,231,0.2);
+      border-radius: 2px;
+      padding: 1px 6px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .card-link {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .card-link:hover { color: var(--neon); }
+    .card-link svg { width: 12px; height: 12px; }
+
+    /* List view card */
+    #gamesGrid.list-view .game-card {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    #gamesGrid.list-view .card-thumb,
+    #gamesGrid.list-view .card-thumb-placeholder {
+      width: 180px;
+      height: 120px;
+      flex-shrink: 0;
+    }
+
+    #gamesGrid.list-view .card-body {
+      flex: 1;
+      padding: 1rem 1.25rem;
+    }
+
+    #gamesGrid.list-view .card-features { display: none; }
+
+    /* ── EMPTY STATE ─────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--text-muted);
+      animation: fadeUp 0.4s ease;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.6;
+    }
+
+    .empty-state h2 {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      color: var(--dim);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
+    }
+
+    .empty-state p {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      max-width: 400px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.8;
+    }
+
+    /* ── LOADING SPINNER ─────────────────────── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(6,10,15,0.85);
+      z-index: 500;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .loading-overlay.active { display: flex; }
+
+    .spinner {
+      width: 56px;
+      height: 56px;
+      border: 3px solid var(--border);
+      border-top-color: var(--neon);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      box-shadow: var(--glow);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-family: var(--font-head);
+      font-size: 0.8rem;
+      color: var(--neon);
+      letter-spacing: 0.2em;
+      text-shadow: var(--glow);
+    }
+
+    .loading-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--dim);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── PROGRESS BAR ────────────────────────── */
+    .progress-wrap {
+      width: 200px;
+      height: 3px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--neon);
+      width: 30%;
+      border-radius: 3px;
+      box-shadow: var(--glow);
+      animation: progress 1.5s ease-in-out infinite;
+    }
+
+    @keyframes progress {
+      0%   { width: 5%; margin-left: 0; }
+      50%  { width: 40%; margin-left: 30%; }
+      100% { width: 5%; margin-left: 95%; }
+    }
+
+    /* ── FOOTER ──────────────────────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-text a {
+      color: var(--neon);
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media (max-width: 768px) {
+      .header-controls { max-width: none; }
+      .hero-inner { flex-direction: column; align-items: flex-start; }
+      .scrape-box { flex-direction: column; }
+      .toolbar { flex-direction: column; align-items: flex-start; }
+      #gamesGrid.list-view .card-thumb,
+      #gamesGrid.list-view .card-thumb-placeholder { width: 120px; height: 90px; }
+    }
+
+    @media (max-width: 520px) {
+      header, .hero { padding-left: 1rem; padding-right: 1rem; }
+      .scrape-panel, .status-bar, .toolbar, .games-container { padding-left: 1rem; padding-right: 1rem; }
+      .header-inner { height: auto; padding: 0.75rem 0; flex-wrap: wrap; }
+      #gamesGrid { grid-template-columns: 1fr; }
+      #gamesGrid.list-view .game-card { flex-direction: column; }
+      #gamesGrid.list-view .card-thumb,
+      #gamesGrid.list-view .card-thumb-placeholder { width: 100%; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── LOADING OVERLAY ──────────────────────── -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">SCRAPING IN PROGRESS</div>
+    <div class="loading-sub">Fetching data from Kotaku...</div>
+    <div class="progress-wrap"><div class="progress-bar"></div></div>
+  </div>
+
+  <!-- ── HEADER ───────────────────────────────── -->
+  <header>
+    <div class="header-inner">
+      <a class="logo" href="#">
+        <div class="logo-icon">🎮</div>
+        <div>
+          <span class="logo-text">KOTAKU//SCRAPER</span>
+          <span class="logo-sub">GAME DATABASE INTERFACE</span>
+        </div>
+      </a>
+
+      <div class="header-controls">
+        <div class="search-wrapper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search games, developers, publishers..." />
+        </div>
+        <select id="platformFilter">
+          <option value="all">All Platforms</option>
+        </select>
+        <select id="genreFilter">
+          <option value="all">All Genres</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── HERO ─────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <h1>GAME INTEL DATABASE</h1>
+        <p>// Scraped from kotaku.com/games — Node.js + Axios + Cheerio + Express</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <span class="stat-num" id="statGames">0</span>
+          <span class="stat-label">Games</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statPlatforms">—</span>
+          <span class="stat-label">Platforms</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statLastScrape">—</span>
+          <span class="stat-label">Last Scrape</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SCRAPE PANEL ──────────────────────────── -->
+  <section class="scrape-panel">
+    <div class="scrape-box">
+      <div class="url-input-group">
+        <label>TARGET URL</label>
+        <input type="text" id="scrapeUrl" placeholder="Paste Kotaku URL — e.g. https://kotaku.com/games" />
+      </div>
+      <div class="scrape-actions">
+        <button class="btn btn-primary" id="btnScrape">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+          </svg>
+          SCRAPE NOW
+        </button>
+        <button class="btn btn-outline" id="btnRefresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+          </svg>
+          RELOAD
+        </button>
+        <a class="btn btn-outline" id="btnExportJSON" href="/api/export/json" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          JSON
+        </a>
+        <a class="btn btn-outline" id="btnExportCSV" href="/api/export/csv" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          CSV
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATUS BAR ────────────────────────────── -->
+  <div class="status-bar">
+    <div class="status-msg" id="statusMsg">
+      <div class="pulse"></div>
+      <span id="statusText">Ready</span>
+    </div>
+  </div>
+
+  <!-- ── TOOLBAR ───────────────────────────────── -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="view-toggle">
+        <button class="view-btn active" id="btnGridView" title="Grid View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+        </button>
+        <button class="view-btn" id="btnListView" title="List View">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+            <line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1.5"/>
+            <circle cx="3" cy="12" r="1.5"/><circle cx="3" cy="18" r="1.5"/>
+          </svg>
+        </button>
+      </div>
+      <div class="sort-group">
+        <span>SORT</span>
+        <select id="sortBy" style="min-width:100px">
+          <option value="default">Default</option>
+          <option value="title">Title A–Z</option>
+          <option value="date">Latest</option>
+        </select>
+      </div>
+    </div>
+    <div class="results-count" id="resultsCount">
+      <strong>0</strong> games found
+    </div>
+  </div>
+
+  <!-- ── GAMES GRID ─────────────────────────────── -->
+  <main class="games-container">
+    <div id="gamesGrid"></div>
+  </main>
+
+  <!-- ── FOOTER ───────────────────────────────────  -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-text">
+        Data sourced from <a href="https://kotaku.com/games" target="_blank">kotaku.com/games</a>
+        · Built with Node.js, Axios, Cheerio, Express.js
+      </span>
+      <div class="footer-links">
+        <a class="btn btn-outline" href="/api/games" target="_blank" style="font-size:0.6rem">API</a>
+        <a class="btn btn-outline" href="/api/status" target="_blank" style="font-size:0.6rem">STATUS</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── JAVASCRIPT ─────────────────────────────── -->
+  <script>
+    // ── STATE ──────────────────────────────────────
+    let allGames = [];
+    let filteredGames = [];
+    let isPolling = false;
+    let pollTimer = null;
+
+    const $ = id => document.getElementById(id);
+
+    // ── INIT ───────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      loadGames();
+      bindEvents();
+    });
+
+    function bindEvents() {
+      $('btnScrape').addEventListener('click', startScrape);
+      $('btnRefresh').addEventListener('click', loadGames);
+      $('searchInput').addEventListener('input', debounce(applyFilters, 280));
+      $('platformFilter').addEventListener('change', applyFilters);
+      $('genreFilter').addEventListener('change', applyFilters);
+      $('sortBy').addEventListener('change', applyFilters);
+      $('btnGridView').addEventListener('click', () => setViewMode('grid'));
+      $('btnListView').addEventListener('click', () => setViewMode('list'));
+    }
+
+    // ── LOAD GAMES ─────────────────────────────────
+    async function loadGames() {
+      showStatus('Loading cached games...', 'info');
+      try {
+        const q     = $('searchInput').value.trim();
+        const pl    = $('platformFilter').value;
+        const genre = $('genreFilter') ? $('genreFilter').value : 'all';
+        const sort  = $('sortBy').value;
+
+        const params = new URLSearchParams();
+        if (q)                        params.set('q', q);
+        if (pl    && pl    !== 'all') params.set('platform', pl);
+        if (genre && genre !== 'all') params.set('genre', genre);
+        if (sort  !== 'default')      params.set('sortBy', sort);
+
+        const res = await fetch('/api/games?' + params.toString());
+
+        const contentType = res.headers.get('content-type') || '';
+        if (!res.ok || !contentType.includes('application/json')) {
+          const raw = await res.text();
+          throw new Error(`Server error (${res.status}): ${raw.slice(0, 120)}`);
+        }
+
+        const data = await res.json();
+        allGames      = data.games || [];
+        filteredGames = [...allGames];
+
+        // Rebuild filter dropdowns from actual scraped data
+        populateDropdown('platformFilter', data.platforms || [], pl);
+        populateDropdown('genreFilter',    data.genres    || [], genre);
+
+        updateStats(data);
+        renderGames(allGames);
+
+        if (allGames.length === 0) {
+          showStatus('No games cached yet. Click SCRAPE NOW to fetch data from Kotaku.', 'warning');
+        } else {
+          hideStatus();
+        }
+      } catch (err) {
+        if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+          showStatus('⚠ Cannot reach server. Make sure you ran: npm start', 'error');
+        } else {
+          showStatus('Error loading games: ' + err.message, 'error');
+        }
+        renderGames([]);
+      }
+    }
+
+    // ── POPULATE A FILTER DROPDOWN FROM DATA ───────
+    function populateDropdown(id, items, selectedValue) {
+      const el = $(id);
+      if (!el) return;
+      const label = id === 'genreFilter' ? 'All Genres' : 'All Platforms';
+      el.innerHTML = `<option value="all">${label}</option>`;
+      for (const item of items) {
+        const opt = document.createElement('option');
+        opt.value       = item;
+        opt.textContent = item;
+        if (item === selectedValue) opt.selected = true;
+        el.appendChild(opt);
+      }
+    }
+
+    // ── SCRAPE ─────────────────────────────────────
+    async function startScrape() {
+      const url = $('scrapeUrl').value.trim();
+      if (!url) {
+        showStatus('⚠ Paste a Kotaku URL first — e.g. https://kotaku.com/games', 'warning');
+        return;
+      }
+      if (!url.includes('kotaku.com')) {
+        showStatus('⚠ URL must be from kotaku.com', 'warning');
+        return;
+      }
+
+      $('btnScrape').disabled = true;
+      showLoadingOverlay(true);
+      showStatus('Scrape started... this may take 30–60 seconds.', 'info');
+
+      try {
+        const res = await fetch('/api/scrape', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+
+        const contentType = res.headers.get('content-type') || '';
+        if (!contentType.includes('application/json')) {
+          const raw = await res.text();
+          throw new Error(`Server error (${res.status}): ${raw.slice(0, 120)}`);
+        }
+
+        const data = await res.json();
+
+        if (res.status === 409) {
+          showStatus('⚠ A scrape is already running.', 'warning');
+          showLoadingOverlay(false);
+          $('btnScrape').disabled = false;
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Scrape request failed');
+        }
+
+        // Poll for completion
+        startPolling();
+
+      } catch (err) {
+        showStatus('Error: ' + err.message, 'error');
+        showLoadingOverlay(false);
+        $('btnScrape').disabled = false;
+      }
+    }
+
+    function startPolling() {
+      if (isPolling) return;
+      isPolling = true;
+
+      pollTimer = setInterval(async () => {
+        try {
+          const res = await fetch('/api/status');
+          const data = await res.json();
+
+          if (!data.scrapeInProgress) {
+            clearInterval(pollTimer);
+            isPolling = false;
+            showLoadingOverlay(false);
+            $('btnScrape').disabled = false;
+
+            if (data.lastScrapeError) {
+              showStatus('Scrape error: ' + data.lastScrapeError, 'error');
+            } else {
+              showStatus(`✓ Scrape complete — ${data.gamesCount} games loaded!`, 'info');
+              loadGames();
+            }
+          }
+        } catch (_) {}
+      }, 3000);
+    }
+
+    // ── FILTER & SORT ──────────────────────────────
+    function applyFilters() {
+      const q      = $('searchInput').value.trim().toLowerCase();
+      const pl     = $('platformFilter').value;
+      const genre  = $('genreFilter').value;
+      const sortBy = $('sortBy').value;
+
+      let games = [...allGames];
+
+      if (q) {
+        games = games.filter(g =>
+          (g.gameTitle   ||'').toLowerCase().includes(q) ||
+          (g.keyFeatures ||'').toLowerCase().includes(q) ||
+          (g.developer   ||'').toLowerCase().includes(q) ||
+          (g.publisher   ||'').toLowerCase().includes(q) ||
+          (g.platforms   ||'').toLowerCase().includes(q) ||
+          (g.genre       ||'').toLowerCase().includes(q)
+        );
+      }
+
+      if (pl && pl !== 'all') {
+        games = games.filter(g =>
+          (g.platforms || '').toLowerCase().includes(pl.toLowerCase())
+        );
+      }
+
+      if (genre && genre !== 'all') {
+        games = games.filter(g =>
+          (g.genre || '').toLowerCase() === genre.toLowerCase()
+        );
+      }
+
+      if (sortBy === 'title') {
+        games.sort((a, b) => a.gameTitle.localeCompare(b.gameTitle));
+      } else if (sortBy === 'date') {
+        games.sort((a, b) => new Date(b.scrapedAt) - new Date(a.scrapedAt));
+      }
+
+      filteredGames = games;
+      renderGames(filteredGames);
+      $('resultsCount').innerHTML = `<strong>${filteredGames.length}</strong> games found`;
+    }
+
+    // ── RENDER ─────────────────────────────────────
+    function renderGames(games) {
+      const grid = $('gamesGrid');
+      $('resultsCount').innerHTML = `<strong>${games.length}</strong> games found`;
+      $('statGames').textContent  = games.length;
+
+      if (games.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column:1/-1">
+            <div class="empty-icon">🕹</div>
+            <h2>NO GAMES FOUND</h2>
+            <p>
+              ${allGames.length === 0
+                ? 'No data in cache. Click SCRAPE NOW to fetch game data from Kotaku.'
+                : 'No games match your current filters. Try adjusting your search.'}
+            </p>
+            ${allGames.length === 0 ? `<button class="btn btn-primary" onclick="startScrape()">SCRAPE NOW</button>` : ''}
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = games.map((g, i) => buildCard(g, i)).join('');
+    }
+
+    function buildCard(g, index) {
+      const isNA = v => v === 'Not Available';
+      const delay = Math.min(index * 40, 400);
+
+      const thumbHtml = g.thumbnail
+        ? `<img class="card-thumb" src="${escHtml(g.thumbnail)}" alt="${escHtml(g.gameTitle)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" /><div class="card-thumb-placeholder" style="display:none">🎮</div>`
+        : `<div class="card-thumb-placeholder">🎮</div>`;
+
+      const tagsHtml = g.tags && g.tags.length
+        ? g.tags.slice(0, 3).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')
+        : '';
+
+      return `
+        <div class="game-card" style="animation-delay:${delay}ms">
+          ${thumbHtml}
+          <div class="card-body">
+            <div class="card-title">${escHtml(g.gameTitle)}</div>
+            <div class="card-fields">
+              <div class="field-row">
+                <span class="field-key">RELEASE</span>
+                <span class="field-val ${isNA(g.releaseDate)?'na':''}">${escHtml(g.releaseDate)}</span>
+              </div>
+              <div class="field-row">
+                <span class="field-key">PLATFORM</span>
+                <span class="field-val ${isNA(g.platforms)?'na':''}">${escHtml(g.platforms)}</span>
+              </div>
+              <div class="field-row">
+                <span class="field-key">DEV</span>
+                <span class="field-val ${isNA(g.developer)?'na':''}">${escHtml(g.developer)}</span>
+              </div>
+              <div class="field-row">
+                <span class="field-key">PUB</span>
+                <span class="field-val ${isNA(g.publisher)?'na':''}">${escHtml(g.publisher)}</span>
+              </div>
+              <div class="field-row">
+                <span class="field-key">GENRE</span>
+                <span class="field-val ${isNA(g.genre)?'na':''}">${escHtml(g.genre||'Not Available')}</span>
+              </div>
+            </div>
+            <div class="card-features">${escHtml(g.keyFeatures)}</div>
+            <div class="card-footer">
+              <div class="card-tags">${tagsHtml}</div>
+              <a class="card-link" href="${escHtml(g.sourceUrl)}" target="_blank" rel="noopener">
+                SOURCE
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // ── VIEW MODE ─────────────────────────────────
+    function setViewMode(mode) {
+      const grid = $('gamesGrid');
+      if (mode === 'list') {
+        grid.classList.add('list-view');
+        $('btnListView').classList.add('active');
+        $('btnGridView').classList.remove('active');
+      } else {
+        grid.classList.remove('list-view');
+        $('btnGridView').classList.add('active');
+        $('btnListView').classList.remove('active');
+      }
+    }
+
+    // ── STATS ─────────────────────────────────────
+    function updateStats(data) {
+      $('statGames').textContent = data.count ?? 0;
+
+      // Use server-provided platform count for accuracy
+      const platCount = (data.platforms || []).length;
+      $('statPlatforms').textContent = platCount > 0 ? platCount : '—';
+
+      if (data.lastScrapeTime) {
+        const d = new Date(data.lastScrapeTime);
+        $('statLastScrape').textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      }
+    }
+
+    // ── STATUS ────────────────────────────────────
+    function showStatus(msg, type = 'info') {
+      const el  = $('statusMsg');
+      const txt = $('statusText');
+      el.className = 'status-msg visible' + (type === 'error' ? ' error' : type === 'warning' ? ' warning' : '');
+      txt.textContent = msg;
+    }
+
+    function hideStatus() {
+      $('statusMsg').classList.remove('visible');
+    }
+
+    function showLoadingOverlay(show) {
+      $('loadingOverlay').classList.toggle('active', show);
+    }
+
+    // ── UTILS ─────────────────────────────────────
+    function escHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function debounce(fn, delay) {
+      let t;
+      return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), delay); };
+    }
+  </script>
+</body>
+</html>
