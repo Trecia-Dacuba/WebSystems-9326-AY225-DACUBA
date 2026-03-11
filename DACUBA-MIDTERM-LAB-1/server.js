@@ -38,6 +38,16 @@ if (!fs.existsSync(path.join(__dirname, "data"))) {
 }
 
 // ──────────────────────────────────────────────
+// CLEAR OLD DATA ON EVERY SERVER START
+// ──────────────────────────────────────────────
+[DATA_JSON, DATA_CSV].forEach((file) => {
+  if (fs.existsSync(file)) {
+    fs.unlinkSync(file);
+    console.log(`🗑️  Cleared old data: ${path.basename(file)}`);
+  }
+});
+
+// ──────────────────────────────────────────────
 // STATE — simple in-process scrape lock
 // ──────────────────────────────────────────────
 let scrapeInProgress = false;
